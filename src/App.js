@@ -278,7 +278,7 @@ const styles = {
   field: { flex: "1 1 280px" },
   label: { display: "block", fontSize: 13, marginBottom: 6, color: "#333" },
   input: {
-    width: "100%",
+    width: "95%",
     padding: "10px 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
@@ -322,15 +322,13 @@ const styles = {
     background: "white",
     cursor: "pointer",
     fontSize: 18,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: "flex-end",
   },
 
   singleRow: {
     display: "flex",
     gap: 10,
-    alignItems: "stretch",
+    alignItems: "flex-end",
     marginBottom: 12,
   },
   iconButton: {
