@@ -77,12 +77,31 @@ export default function App() {
   };
 
 
+
+  const isIPv4Format = (ip) => {
+    const input = ip.trim();
+
+    const parts = input.split(".");
+    if (parts.length != 4) return false;
+
+    for (const i of parts) {
+      if (i === "") return false; // cannot be empty
+      if (!/^\d+$/.test(i)) return false; // must be digits
+      if (i.length > 1 && i.startsWith("0")) return false; // no leading zeros
+      const num = Number(i);
+      if (n < 0 || n > 255) return false; // must be from 1 to 255
+    }
+
+    return true;
+  }
+
   const isLinuxRowFilled = (row) =>
-    row.hostname.trim() !== "" && row.ip.trim() !== "";
+    row.hostname.trim() !== "" && isIPv4Format(row.ip);
 
-  const isIpFilled = (ip) => ip.trim() !== "";
+  const isIpFilled = (ip) => isIPv4Format(ip);
 
-  const getIsCurrentSelectionValid = () => {
+
+  const isFieldsValid = () => {
     if (selected === "Linux") {
       return linuxRows.length > 0 && linuxRows.every(isLinuxRowFilled);
     }
@@ -143,6 +162,9 @@ export default function App() {
                     onChange={(e) => updateLinuxRow(idx, "ip", e.target.value)}
                     placeholder="e.g. 10.0.0.12"
                   />
+                  {row.ip.trim() !== "" && !isIPv4Format(row.ip) && (
+                    <div style={styles.errorText}>Invalid IPv4 address (e.g. 10.0.0.1)</div>
+                  )}
                 </div>
 
                 <button
@@ -187,6 +209,9 @@ export default function App() {
                     onChange={(e) => updateIpRow(selected, idx, e.target.value)}
                     placeholder="e.g. 10.0.0.12"
                   />
+                  {ip.trim() !== "" && !isIPv4Format(ip) && (
+                    <div style={styles.errorText}>Invalid IPv4 address (e.g. 10.0.0.1)</div>
+                  )}
                 </div>
 
                 <button
@@ -341,5 +366,11 @@ const styles = {
     background: "white",
     cursor: "pointer",
     fontSize: 20,
+  },
+
+  errorText: {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#d00",
   },
 };
