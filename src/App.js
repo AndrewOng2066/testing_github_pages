@@ -64,8 +64,7 @@ export default function App() {
     if (selected === "Linux") {
       linuxRows.forEach((row, index) => {
         message += `Entry ${index + 1}:\n`;
-        message += `  Hostname: ${row.hostname}\n`;
-        message += `  IP: ${row.ip}\n\n`;
+        message += `  Hostname-IP: ${row.hostname}-${row.ip}\n`;
       });
     } else {
       const ips = ipRowsByOption[selected] || [];
@@ -279,7 +278,7 @@ const styles = {
   field: { flex: "1 1 280px" },
   label: { display: "block", fontSize: 13, marginBottom: 6, color: "#333" },
   input: {
-    width: "95%",
+    width: "100%",
     padding: "10px 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
@@ -318,19 +317,20 @@ const styles = {
 
   deleteButton: {
     width: 44,
-    height: 44,
     borderRadius: 10,
     border: "1px solid #ccc",
     background: "white",
     cursor: "pointer",
     fontSize: 18,
-    alignSelf: "flex-end",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   singleRow: {
     display: "flex",
     gap: 10,
-    alignItems: "flex-end",
+    alignItems: "stretch",
     marginBottom: 12,
   },
   iconButton: {
