@@ -317,12 +317,15 @@ const styles = {
 
   deleteButton: {
     width: 44,
+    padding: "0 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
     background: "white",
     cursor: "pointer",
-    fontSize: 18,
-    alignSelf: "flex-end",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   singleRow: {
