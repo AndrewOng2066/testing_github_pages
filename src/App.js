@@ -223,7 +223,6 @@ export default function App() {
           style={{
             ...styles.submitButton,
             opacity: getIsCurrentSelectionValid() ? 1 : 0.5,
-            cursor: getIsCurrentSelectionValid ? "pointer" : "not-allowed",
           }}
           title={`Submit for ${selected}`}
         >
@@ -279,7 +278,7 @@ const styles = {
   field: { flex: "1 1 280px" },
   label: { display: "block", fontSize: 13, marginBottom: 6, color: "#333" },
   input: {
-    width: "100%",
+    width: "80%",
     padding: "10px 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
