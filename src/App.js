@@ -243,11 +243,11 @@ export default function App() {
         <button
           type="button"
           onClick={showAlert}
-          disabled={!getIsCurrentSelectionValid()}
+          disabled={!isFieldsValid()}
           style={{
             ...styles.submitButton,
-            opacity: getIsCurrentSelectionValid() ? 1 : 0.5,
-            cursor: getIsCurrentSelectionValid ? "pointer" : "not-allowed",
+            opacity: isFieldsValid() ? 1 : 0.5,
+            cursor: isFieldsValid ? "pointer" : "not-allowed",
           }}
           title={`Submit for ${selected}`}
         >
