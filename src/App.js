@@ -54,7 +54,7 @@ export default function App() {
   };
 
   const showAlert = () => {
-    if (!getIsCurrentSelectionValid()) {
+    if (!isFieldsValid()) {
       alert("Please fill in all fields before showing the values.");
       return;
     }
@@ -89,7 +89,7 @@ export default function App() {
       if (!/^\d+$/.test(i)) return false; // must be digits
       if (i.length > 1 && i.startsWith("0")) return false; // no leading zeros
       const num = Number(i);
-      if (n < 0 || n > 255) return false; // must be from 1 to 255
+      if (num < 0 || num > 255) return false; // must be from 1 to 255
     }
 
     return true;
