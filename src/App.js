@@ -42,6 +42,25 @@ export default function App() {
     }));
   };
 
+  const showAlert = () => {
+    let message = `Selected system: ${selected}\n\n`;
+
+    if (selected === "Linux") {
+      linuxRows.forEach((row, index) => {
+        message += `Entry ${index + 1}:\n`;
+        message += `  Hostname: ${row.hostname || "(empty)"}\n`;
+        message += `  IP: ${row.ip || "(empty)"}\n\n`;
+      });
+    } else {
+      const ips = ipRowsByOption[selected] || [];
+      ips.forEach((ip, index) => {
+        message += `IP ${index + 1}: ${ip || "(empty)"}\n`;
+      });
+    }
+
+    alert(message);
+  };
+
   return (
     <div style={styles.page}>
       <div style={styles.card}>
@@ -142,6 +161,13 @@ export default function App() {
             </button>
           </div>
         )}
+
+        <button
+          type="button"
+          onClick={() => showAlert}
+        >
+          Submit {selected}
+        </button>
 
         {/* Optional: quick debug output */}
         <details style={{ marginTop: 16 }}>
