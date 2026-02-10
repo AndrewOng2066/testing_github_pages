@@ -317,12 +317,11 @@ const styles = {
 
   deleteButton: {
     width: 44,
-    padding: "0 12px",
+    padding: "0 12px",   // match input horizontal padding
     borderRadius: 10,
     border: "1px solid #ccc",
     background: "white",
     cursor: "pointer",
-
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
