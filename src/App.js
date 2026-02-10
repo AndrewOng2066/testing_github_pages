@@ -45,17 +45,17 @@ export default function App() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h2 style={{ marginTop: 0 }}>Dynamic Inputs</h2>
+        <h2 style={{ marginTop: 0 }}>Qualys Inputs</h2>
 
         {/* Radio group */}
         <fieldset style={styles.fieldset}>
-          <legend style={styles.legend}>Select Type</legend>
+          <legend style={styles.legend}>Select System</legend>
           <div style={styles.radioRow}>
             {OPTIONS.map((opt) => (
               <label key={opt} style={styles.radioLabel}>
                 <input
                   type="radio"
-                  name="type"
+                  name="system"
                   value={opt}
                   checked={selected === opt}
                   onChange={() => setSelected(opt)}
@@ -118,16 +118,6 @@ export default function App() {
                 plus icon BEFORE the text field, and adds more fields */}
             {(ipRowsByOption[selected] ?? [""]).map((ip, idx) => (
               <div key={idx} style={styles.singleRow}>
-                <button
-                  type="button"
-                  onClick={() => addIpRow(selected)}
-                  style={styles.iconButton}
-                  aria-label={`Add another IP address for ${selected}`}
-                  title="Add another IP address"
-                >
-                  ＋
-                </button>
-
                 <div style={{ flex: 1 }}>
                   <label style={styles.label}>IP address</label>
                   <input
@@ -140,6 +130,16 @@ export default function App() {
                 </div>
               </div>
             ))}
+
+            <button
+              type="button"
+              onClick={() => addIpRow(selected)}
+              style={styles.iconButton}
+              aria-label={`Add another IP address for ${selected}`}
+              title="Add another IP address"
+            >
+              ＋
+            </button>
           </div>
         )}
 
