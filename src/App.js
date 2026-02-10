@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 const OPTIONS = ["Linux", "DC", "ascott", "SQL"];
 
@@ -16,8 +16,6 @@ export default function App() {
   });
 
   const isLinux = selected === "Linux";
-
-  const otherOptions = useMemo(() => OPTIONS.filter((o) => o !== "Linux"), []);
 
   const addLinuxRow = () =>
     setLinuxRows((prev) => [...prev, { hostname: "", ip: "" }]);
@@ -82,7 +80,7 @@ export default function App() {
     const input = ip.trim();
 
     const parts = input.split(".");
-    if (parts.length != 4) return false;
+    if (parts.length !== 4) return false;
 
     for (const i of parts) {
       if (i === "") return false; // cannot be empty
@@ -112,9 +110,9 @@ export default function App() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h2 style={{ marginTop: 0 }}>Qualys Inputs</h2>
+        <h2 style={{ marginTop: 0, textAlign: "center" }}>Qualys Inputs</h2>
 
-        {/* Radio group */}
+        {/* Radio group for selecting the system */}
         <fieldset style={styles.fieldset}>
           <legend style={styles.legend}>Select System</legend>
           <div style={styles.radioRow}>
@@ -133,7 +131,7 @@ export default function App() {
           </div>
         </fieldset>
 
-        {/* Conditional inputs */}
+        {/* Displaying Linux or non-Linux */}
         {isLinux ? (
           <div style={styles.section}>
             <h3 style={styles.sectionTitle}>Linux</h3>
@@ -167,21 +165,24 @@ export default function App() {
                   )}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => deleteLinuxRow(idx)}
-                  style={styles.deleteButton}
-                  aria-label={`Delete Linux entry ${idx + 1}`}
-                  title="Delete"
-                  disabled={linuxRows.length === 1} // optional: prevent deleting the last row
-                >
-                  🗑
-                </button>
+                <div style={styles.deleteCol}>
+                  <span style={styles.labelSpacer}>Spacer</span>
+                  <button
+                    type="button"
+                    onClick={() => deleteLinuxRow(idx)}
+                    style={styles.deleteButton}
+                    aria-label={`Delete Linux entry ${idx + 1}`}
+                    title="Delete"
+                    disabled={linuxRows.length === 1} // prevent deleting the only row
+                  >
+                    🗑
+                  </button>
+                </div>
 
               </div>
             ))}
 
-            {/* plus icon BELOW the pairs */}
+            {/* Add new Hostname/IP pair */}
             <button
               type="button"
               onClick={addLinuxRow}
@@ -196,8 +197,7 @@ export default function App() {
           <div style={styles.section}>
             <h3 style={styles.sectionTitle}>{selected}</h3>
 
-            {/* For DC / ascott / SQL:
-                plus icon BEFORE the text field, and adds more fields */}
+            {/* For non-linux:*/}
             {(ipRowsByOption[selected] ?? [""]).map((ip, idx) => (
               <div key={idx} style={styles.singleRow}>
                 <div style={{ flex: 1 }}>
@@ -220,7 +220,7 @@ export default function App() {
                   style={styles.deleteButton}
                   aria-label={`Delete IP ${idx + 1} for ${selected}`}
                   title="Delete"
-                  disabled={(ipRowsByOption[selected]?.length ?? 1) === 1} // optional: prevent deleting last row
+                  disabled={(ipRowsByOption[selected]?.length ?? 1) === 1} // prevent deleting the only row
                 >
                   🗑
                 </button>
@@ -292,16 +292,45 @@ const styles = {
     padding: 12,
     marginBottom: 16,
   },
-  legend: { padding: "0 6px" },
-  radioRow: { display: "flex", gap: 16, flexWrap: "wrap" },
-  radioLabel: { display: "flex", alignItems: "center", cursor: "pointer" },
+  legend: {
+    padding: "0 6px"
+  },
+  radioRow: {
+    display: "flex",
+    gap: 16,
+    flexWrap: "wrap"
+  },
+  radioLabel: {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer"
+  },
 
-  section: { marginTop: 12 },
-  sectionTitle: { margin: "8px 0 12px" },
+  section: {
+    marginTop: 12
+  },
+  sectionTitle: {
+    margin: "8px 0 12px",
+    textAlign: "center"
+  },
 
-  pairRow: { display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" },
-  field: { flex: "1 1 280px" },
-  label: { display: "block", fontSize: 13, marginBottom: 6, color: "#333" },
+  pairRow: {
+    display: "flex",
+    gap: 12,
+    marginBottom: 12,
+    flexWrap: "wrap",
+    alignItems: "flex-start"
+  },
+  field: {
+    flex: "1 1 280px"
+  },
+  label: {
+    display: "block",
+    fontSize: 13,
+    marginBottom: 6,
+    color: "#333",
+    textAlign: "center"
+  },
   input: {
     width: "95%",
     padding: "10px 12px",
@@ -320,6 +349,9 @@ const styles = {
     cursor: "pointer",
     fontSize: 22,
     lineHeight: "22px",
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 
   submitButton: {
@@ -331,18 +363,33 @@ const styles = {
     cursor: "pointer",
     fontSize: 16,
     lineHeight: "20px",
-    display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
     width: "fit-content",
     height: "auto",
     whiteSpace: "nowrap",
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
+  deleteCol: {
+    display: "flex",
+    flexDirection: "column",
+    flex: "0 0 auto",
+  },
+
+  labelSpacer: {
+    display: "block",
+    fontSize: 13,
+    marginBottom: 6,
+    visibility: "hidden",
   },
 
   deleteButton: {
     width: 44,
-    padding: "0 12px",   // match input horizontal padding
+    padding: "10px 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
     background: "white",
