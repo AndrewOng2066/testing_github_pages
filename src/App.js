@@ -164,7 +164,7 @@ export default function App() {
 
         <button
           type="button"
-          onClick={() => showAlert}
+          onClick={showAlert}
         >
           Submit {selected}
         </button>
