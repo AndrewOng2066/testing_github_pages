@@ -223,6 +223,7 @@ export default function App() {
           style={{
             ...styles.submitButton,
             opacity: getIsCurrentSelectionValid() ? 1 : 0.5,
+            cursor: getIsCurrentSelectionValid ? "pointer" : "not-allowed",
           }}
           title={`Submit for ${selected}`}
         >
@@ -278,7 +279,7 @@ const styles = {
   field: { flex: "1 1 280px" },
   label: { display: "block", fontSize: 13, marginBottom: 6, color: "#333" },
   input: {
-    width: "80%",
+    width: "95%",
     padding: "10px 12px",
     borderRadius: 10,
     border: "1px solid #ccc",
@@ -298,15 +299,21 @@ const styles = {
   },
 
   submitButton: {
-    marginTop: 6,
-    width: 44,
-    height: 44,
+    marginTop: 12,
+    padding: "10px 14px",
     borderRadius: 10,
     border: "1px solid #ccc",
     background: "white",
     cursor: "pointer",
-    fontSize: 22,
-    lineHeight: "22px",
+    fontSize: 16,
+    lineHeight: "20px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    width: "fit-content",
+    height: "auto",
+    whiteSpace: "nowrap",
   },
 
   deleteButton: {
