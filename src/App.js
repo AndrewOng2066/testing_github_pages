@@ -28,6 +28,10 @@ export default function App() {
     );
   };
 
+  const deleteLinuxRow = (index) => {
+    setLinuxRows((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const addIpRow = (option) => {
     setIpRowsByOption((prev) => ({
       ...prev,
@@ -42,23 +46,49 @@ export default function App() {
     }));
   };
 
+  const deleteIpRow = (option, index) => {
+    setIpRowsByOption((prev) => ({
+      ...prev,
+      [option]: prev[option].filter((_, i) => i !== index),
+    }));
+  };
+
   const showAlert = () => {
+    if (!getIsCurrentSelectionValid()) {
+      alert("Please fill in all fields before showing the values.");
+      return;
+    }
+
     let message = `Selected system: ${selected}\n\n`;
 
     if (selected === "Linux") {
       linuxRows.forEach((row, index) => {
         message += `Entry ${index + 1}:\n`;
-        message += `  Hostname: ${row.hostname || "(empty)"}\n`;
-        message += `  IP: ${row.ip || "(empty)"}\n\n`;
+        message += `  Hostname: ${row.hostname}\n`;
+        message += `  IP: ${row.ip}\n\n`;
       });
     } else {
       const ips = ipRowsByOption[selected] || [];
       ips.forEach((ip, index) => {
-        message += `IP ${index + 1}: ${ip || "(empty)"}\n`;
+        message += `IP ${index + 1}: ${ip}\n`;
       });
     }
 
     alert(message);
+  };
+
+
+  const isLinuxRowFilled = (row) =>
+    row.hostname.trim() !== "" && row.ip.trim() !== "";
+
+  const isIpFilled = (ip) => ip.trim() !== "";
+
+  const getIsCurrentSelectionValid = () => {
+    if (selected === "Linux") {
+      return linuxRows.length > 0 && linuxRows.every(isLinuxRowFilled);
+    }
+    const ips = ipRowsByOption[selected] ?? [];
+    return ips.length > 0 && ips.every(isIpFilled);
   };
 
   return (
@@ -115,6 +145,18 @@ export default function App() {
                     placeholder="e.g. 10.0.0.12"
                   />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => deleteLinuxRow(idx)}
+                  style={styles.deleteButton}
+                  aria-label={`Delete Linux entry ${idx + 1}`}
+                  title="Delete"
+                  disabled={linuxRows.length === 1} // optional: prevent deleting the last row
+                >
+                  🗑
+                </button>
+
               </div>
             ))}
 
@@ -147,24 +189,43 @@ export default function App() {
                     placeholder="e.g. 10.0.0.12"
                   />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => deleteIpRow(selected, idx)}
+                  style={styles.deleteButton}
+                  aria-label={`Delete IP ${idx + 1} for ${selected}`}
+                  title="Delete"
+                  disabled={(ipRowsByOption[selected]?.length ?? 1) === 1} // optional: prevent deleting last row
+                >
+                  🗑
+                </button>
               </div>
             ))}
 
             <button
               type="button"
               onClick={() => addIpRow(selected)}
-              style={styles.iconButton}
+              style={styles.addButton}
               aria-label={`Add another IP address for ${selected}`}
               title="Add another IP address"
             >
               ＋
             </button>
+
           </div>
         )}
 
         <button
           type="button"
           onClick={showAlert}
+          disabled={!getIsCurrentSelectionValid()}
+          style={{
+            ...styles.submitButton,
+            opacity: getIsCurrentSelectionValid() ? 1 : 0.5,
+            cursor: getIsCurrentSelectionValid ? "pointer" : "not-allowed",
+          }}
+          title={`Submit for ${selected}`}
         >
           Submit {selected}
         </button>
@@ -235,6 +296,29 @@ const styles = {
     cursor: "pointer",
     fontSize: 22,
     lineHeight: "22px",
+  },
+
+  submitButton: {
+    marginTop: 6,
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    border: "1px solid #ccc",
+    background: "white",
+    cursor: "pointer",
+    fontSize: 22,
+    lineHeight: "22px",
+  },
+
+  deleteButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    border: "1px solid #ccc",
+    background: "white",
+    cursor: "pointer",
+    fontSize: 18,
+    alignSelf: "flex-end",
   },
 
   singleRow: {
